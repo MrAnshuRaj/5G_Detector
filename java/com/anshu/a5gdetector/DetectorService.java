@@ -31,6 +31,15 @@ public class DetectorService extends Service {
    TextToSpeech textToSpeech;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        textToSpeech=new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status!=TextToSpeech.ERROR)
+                    textToSpeech.setLanguage(Locale.ENGLISH);
+            }
+        });
+
         thread=new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -67,13 +76,6 @@ public class DetectorService extends Service {
         manager.notify(50,notification.build());
 
         startForeground(1001, notification.build());
-        textToSpeech=new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status!=TextToSpeech.ERROR)
-                    textToSpeech.setLanguage(Locale.ENGLISH);
-            }
-        });
         return super.onStartCommand(intent, flags, startId);
     }
     @Nullable
